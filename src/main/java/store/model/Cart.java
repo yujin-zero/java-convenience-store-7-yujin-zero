@@ -13,4 +13,8 @@ public class Cart {
     public void addCartItem(CartItem item) {
         cart.add(item);
     }
+
+    public int getItemCountInCart() {
+        return cart.stream().mapToInt(CartItem::getQuantity).sum();
+    }
 }
