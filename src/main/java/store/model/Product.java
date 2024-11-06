@@ -16,4 +16,8 @@ public class Product {
     public void reduceQuantity(int orderQuantity) {
         quantity -= orderQuantity;
     }
+
+    public int getPrice() {
+        return price;
+    }
 }
