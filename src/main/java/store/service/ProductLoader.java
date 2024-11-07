@@ -1,7 +1,6 @@
 package store.service;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,13 +14,11 @@ public class ProductLoader {
         List<Product> products = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
+            String line = br.readLine();
             while ((line = br.readLine()) != null) {
                 Product product = parseProductLine(line);
                 products.add(product);
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("파일을 찾을 수 없습니다: " + filePath, e);
         } catch (IOException e) {
             throw new RuntimeException("파일을 읽는 도중 오류가 발생했습니다: " + filePath, e);
         }
@@ -39,6 +36,9 @@ public class ProductLoader {
         String promotion = null;
         if (tokenizer.hasMoreTokens()) {
             promotion = tokenizer.nextToken().trim();
+            if ("null".equalsIgnoreCase(promotion)) {
+                promotion = null;
+            }
         }
 
         return new Product(name, price, quantity, promotion);
