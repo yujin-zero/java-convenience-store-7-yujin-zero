@@ -17,7 +17,15 @@ public class Product {
         quantity -= orderQuantity;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public int getPrice() {
         return price;
+    }
+
+    public String getPromotion() {
+        return promotion;
     }
 }
