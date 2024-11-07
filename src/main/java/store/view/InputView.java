@@ -25,6 +25,12 @@ public class InputView {
         return input.equalsIgnoreCase("Y");
     }
 
+    public static boolean confirmAdditionalOption(String message) {
+        System.out.print(message + " (Y/N)");
+        String input = Console.readLine();
+        return input.equalsIgnoreCase("Y");
+    }
+
     private static Map<String, Integer> parsePurchaseInput(String input) {
         Map<String, Integer> items = new HashMap<>();
         StringTokenizer pairTokenizer = new StringTokenizer(input.replaceAll("\\[|\\]", ""), ",");
