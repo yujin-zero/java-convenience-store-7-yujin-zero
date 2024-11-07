@@ -38,7 +38,7 @@
 1. ProductLoader : 상품 정보 가져오기
     - [x] 상품 정보를 Product 객체로 변환
     - [x] 각 줄을 ,로 분리하여 name, price, quantity, promotion 추출
-    - [ ] List<Product>로 반환
+    - [x] List<Product>로 반환
 2. PromotionLoader : 프로모션 정보 가져오기
     - [ ] 프로모션 정보를 ProductLoader 객체로 변환
 3. Product : 상품 정보 및 재고 관리
