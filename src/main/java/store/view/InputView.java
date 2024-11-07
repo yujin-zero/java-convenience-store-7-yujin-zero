@@ -19,6 +19,12 @@ public class InputView {
         return input.equalsIgnoreCase("Y");
     }
 
+    public static boolean isAdditionalPurchase() {
+        System.out.println("감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)");
+        String input = Console.readLine();
+        return input.equalsIgnoreCase("Y");
+    }
+
     private static Map<String, Integer> parsePurchaseInput(String input) {
         Map<String, Integer> items = new HashMap<>();
         StringTokenizer pairTokenizer = new StringTokenizer(input.replaceAll("\\[|\\]", ""), ",");
