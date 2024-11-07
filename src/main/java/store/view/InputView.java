@@ -13,6 +13,12 @@ public class InputView {
         return parsePurchaseInput(input);
     }
 
+    public static boolean isMembershipDiscount() {
+        System.out.println("멤버십 할인을 받으시겠습니까? (Y/N)");
+        String input = Console.readLine();
+        return input.equalsIgnoreCase("Y");
+    }
+
     private static Map<String, Integer> parsePurchaseInput(String input) {
         Map<String, Integer> items = new HashMap<>();
         StringTokenizer pairTokenizer = new StringTokenizer(input.replaceAll("\\[|\\]", ""), ",");
