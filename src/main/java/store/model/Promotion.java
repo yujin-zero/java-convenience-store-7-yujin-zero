@@ -33,4 +33,12 @@ public class Promotion {
         }
         return 0;
     }
+
+    public int calculateFreeItems(int quantity) {
+        if (quantity >= buy) {
+            int freeItems = (quantity / (buy + get)) * get;
+            return freeItems;
+        }
+        return 0;
+    }
 }
