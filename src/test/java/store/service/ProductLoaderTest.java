@@ -7,10 +7,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import store.model.Product;
+import store.model.Promotion;
 
 class ProductLoaderTest {
 
@@ -25,7 +28,11 @@ class ProductLoaderTest {
             writer.write("물,500,20,null\n");
         }
 
-        ProductLoader loader = new ProductLoader();
+        List<Promotion> promotions = new ArrayList<>();
+        promotions.add(new Promotion("탄산2+1", 3, 1, LocalDate.of(2024, 11, 1).atStartOfDay(),
+                LocalDate.of(2024, 12, 1).atStartOfDay()));
+
+        ProductLoader loader = new ProductLoader(promotions);
         List<Product> products = loader.loadProduct(tempFile.toString());
 
         assertNotNull(products, "Product 리스트가 null이 아니어야 합니다.");
@@ -35,7 +42,7 @@ class ProductLoaderTest {
         assertEquals("콜라", product1.getName());
         assertEquals(1000, product1.getPrice());
 //        assertEquals(10, product1.getQuantity());
-        assertEquals("탄산2+1", product1.getPromotion());
+        assertEquals("탄산2+1", product1.getPromotion().getName());
 
         Product product2 = products.get(1);
         assertEquals("사이다", product2.getName());
