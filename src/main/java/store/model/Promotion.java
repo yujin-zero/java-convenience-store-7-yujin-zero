@@ -24,4 +24,13 @@ public class Promotion {
         return (currentDate.isAfter(startDate) || currentDate.isEqual(startDate)) && (currentDate.isBefore(endDate)
                 || currentDate.isEqual(endDate)) && quantity >= buy;
     }
+
+    public int calculateDiscountAmount(int quantity, int price) {
+        if (quantity >= buy) {
+            int discountBundles = quantity / (buy + get);
+            int discountAmount = discountBundles * price * get;
+            return discountAmount;
+        }
+        return 0;
+    }
 }
