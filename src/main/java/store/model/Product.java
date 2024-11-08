@@ -4,9 +4,9 @@ public class Product {
     private String name;
     private int price;
     private int quantity;
-    private String promotion;
+    private Promotion promotion;
 
-    public Product(String name, int price, int quantity, String promotion) {
+    public Product(String name, int price, int quantity, Promotion promotion) {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
@@ -25,7 +25,7 @@ public class Product {
         return price;
     }
 
-    public String getPromotion() {
+    public Promotion getPromotion() {
         return promotion;
     }
 }

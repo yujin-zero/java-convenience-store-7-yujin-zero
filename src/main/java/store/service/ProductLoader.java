@@ -7,8 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 import store.model.Product;
+import store.model.Promotion;
 
 public class ProductLoader {
+    private List<Promotion> promotions;
+
+    public ProductLoader(List<Promotion> promotions) {
+        this.promotions = promotions;
+    }
 
     public List<Product> loadProduct(String filePath) {
         List<Product> products = new ArrayList<>();
@@ -33,14 +39,23 @@ public class ProductLoader {
         int price = Integer.parseInt(tokenizer.nextToken().trim());
         int quantity = Integer.parseInt(tokenizer.nextToken().trim());
 
-        String promotion = null;
+        Promotion promotion = null;
         if (tokenizer.hasMoreTokens()) {
-            promotion = tokenizer.nextToken().trim();
-            if ("null".equalsIgnoreCase(promotion)) {
-                promotion = null;
+            String promotionName = tokenizer.nextToken().trim();
+            if ("null".equalsIgnoreCase(promotionName)) {
+                promotion = findPromotionByName(promotionName);
             }
         }
 
         return new Product(name, price, quantity, promotion);
+    }
+
+    private Promotion findPromotionByName(String promotionName) {
+        for (Promotion promotion : promotions) {
+            if (promotion.getName().equalsIgnoreCase(promotionName)) {
+                return promotion;
+            }
+        }
+        return null;
     }
 }
