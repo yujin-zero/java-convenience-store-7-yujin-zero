@@ -41,7 +41,7 @@
     - [x] List<Product>로 반환
 2. PromotionLoader : 프로모션 정보 가져오기
     - [ ] 프로모션 정보를 Promotion 객체로 변환
-    - [ ] 각 줄을 ,로 분리하여 name, buy, get, start_date, end_date 추출
+    - [x] 각 줄을 ,로 분리하여 name, buy, get, start_date, end_date 추출
     - [ ] List<Promotion>로 반환
 3. Product : 상품 정보 및 재고 관리
     - [x] 상품명, 상품 가격, 상품 프로모션 반환
