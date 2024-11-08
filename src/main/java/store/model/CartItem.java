@@ -9,7 +9,7 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public int getTotalPrice() {
+    public int calculateTotalPrice() {
         return product.getPrice() * quantity;
     }
 

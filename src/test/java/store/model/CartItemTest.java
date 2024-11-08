@@ -13,7 +13,7 @@ class CartItemTest {
         Product product = new Product("콜라", 1000, 10, null);
         CartItem cartItem = new CartItem(product, 3);
 
-        int totalPrice = cartItem.getTotalPrice();
+        int totalPrice = cartItem.calculateTotalPrice();
 
         assertEquals(3000, totalPrice, "총 가격이 예상과 일치하지 않습니다.");
     }
