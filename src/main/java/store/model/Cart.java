@@ -17,4 +17,10 @@ public class Cart {
     public int calculateItemCountInCart() {
         return cart.stream().mapToInt(CartItem::getQuantity).sum();
     }
+
+    public int calculateTotalPrice() {
+        return cart.stream()
+                .mapToInt(CartItem::calculateTotalPrice)
+                .sum();
+    }
 }
