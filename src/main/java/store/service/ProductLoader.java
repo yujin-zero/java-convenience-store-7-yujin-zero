@@ -42,7 +42,7 @@ public class ProductLoader {
         Promotion promotion = null;
         if (tokenizer.hasMoreTokens()) {
             String promotionName = tokenizer.nextToken().trim();
-            if ("null".equalsIgnoreCase(promotionName)) {
+            if (!"null".equalsIgnoreCase(promotionName)) {
                 promotion = findPromotionByName(promotionName);
             }
         }
