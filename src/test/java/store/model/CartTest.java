@@ -25,7 +25,7 @@ class CartTest {
 
     @Test
     @DisplayName("장바구니 전체 수량 계산 테스트")
-    public void testGetItemCountInCart() {
+    public void testCalculateItemCountInCart() {
         Product product1 = new Product("사탕", 500, 10, null);
         Product product2 = new Product("초콜릿", 1000, 10, null);
         CartItem cartItem1 = new CartItem(product1, 2);
@@ -35,7 +35,7 @@ class CartTest {
         cart.addCartItem(cartItem1);
         cart.addCartItem(cartItem2);
 
-        int totalCount = cart.getItemCountInCart();
+        int totalCount = cart.calculateItemCountInCart();
         assertEquals(5, totalCount, "장바구니의 전체 수량이 예상과 다릅니다");
     }
 

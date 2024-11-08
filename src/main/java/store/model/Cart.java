@@ -14,7 +14,7 @@ public class Cart {
         cart.add(item);
     }
 
-    public int getItemCountInCart() {
+    public int calculateItemCountInCart() {
         return cart.stream().mapToInt(CartItem::getQuantity).sum();
     }
 }
