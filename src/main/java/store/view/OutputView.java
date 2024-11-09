@@ -18,6 +18,10 @@ public class OutputView {
         });
     }
 
+    public static void printErrorMessage(String errorMessage) {
+        System.out.printf("[ERROR] %s\n", errorMessage);
+    }
+
     private static String getPromotionInfo(Product product) {
         if (product.getPromotion() != null) {
             return " " + product.getPromotion().getName();
