@@ -35,4 +35,11 @@ class CartTest {
         int totalPrice = cart.calculateTotalPrice();
         assertEquals(3400, totalPrice);
     }
+
+    @Test
+    @DisplayName("총 프로모션 적용 할인 금액 테스트")
+    public void testCalculateTotalPromotionDiscount() {
+        int totalPromotionDiscount = cart.calculateTotalPromotionDiscount();
+        assertEquals(1000, totalPromotionDiscount);
+    }
 }
