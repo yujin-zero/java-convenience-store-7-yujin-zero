@@ -42,6 +42,11 @@ public class Promotion {
         return 0;
     }
 
+    public int calculateAppliedItemCount(int quantity) {
+        int discountBundles = quantity / (buy + get);
+        return discountBundles * (buy + get);
+    }
+
     public String getName() {
         return name;
     }
