@@ -26,18 +26,9 @@ public class Cart {
 
     public int calculateTotalPromotionDiscount() {
         return cart.stream()
-                .mapToInt(this::calculateDiscountForItem)
+                .mapToInt(CartItem::calculatePromotionDiscountPrice)
                 .sum();
     }
 
-    private int calculateDiscountForItem(CartItem item) {
-        Product product = item.getProduct();
-        Promotion promotion = product.getPromotion();
-        int quantity = item.getQuantity();
 
-        if (promotion != null && promotion.isApplicable(product, quantity)) {
-            return promotion.calculateDiscountAmount(quantity, product.getPrice());
-        }
-        return 0;
-    }
 }
