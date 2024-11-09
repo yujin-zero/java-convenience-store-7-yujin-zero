@@ -2,6 +2,7 @@ package store.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ public class Cart {
     }
 
     public void addCartItem(CartItem item) {
+        System.out.println(item.getProduct().getName());
         cart.add(item);
     }
 
@@ -68,7 +70,7 @@ public class Cart {
     }
 
     public Map<String, Integer> productCountInCart() {
-        Map<String, Integer> cartItems = new HashMap<>();
+        Map<String, Integer> cartItems = new LinkedHashMap<>();
 
         for (CartItem item : cart) {
             cartItems.put(item.getProduct().getName(), item.getQuantity());

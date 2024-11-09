@@ -1,7 +1,7 @@
 package store.view;
 
 import camp.nextstep.edu.missionutils.Console;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -32,7 +32,7 @@ public class InputView {
     }
 
     private static Map<String, Integer> parsePurchaseInput(String input) {
-        Map<String, Integer> items = new HashMap<>();
+        Map<String, Integer> items = new LinkedHashMap<>();
         StringTokenizer pairTokenizer = new StringTokenizer(input.replaceAll("\\[|\\]", ""), ",");
 
         while (pairTokenizer.hasMoreTokens()) {
