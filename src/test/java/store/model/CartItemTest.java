@@ -41,5 +41,26 @@ class CartItemTest {
         assertEquals(0, discountPrice);
     }
 
-    
+    @Test
+    @DisplayName("프로모션 아닌 상품 금액 테스트")
+    public void testCalculateNonPromotionPrice() {
+        Promotion promotion = new Promotion("탄산2+1", 2, 1, LocalDateTime.now().minusDays(1),
+                LocalDateTime.now().plusDays(1));
+        Product product = new Product("콜라", 1000, 10, promotion);
+        CartItem item = new CartItem(product, 5);
+
+        int nonPromotionPrice = item.calculateNonPromotionPrice();
+        assertEquals(2000, nonPromotionPrice);
+    }
+
+    @Test
+    @DisplayName("프로모션 없을 때 프로모션 아닌 상품 금액 테스트")
+    public void testCalculateNonPromotionPrice_WithNoPromotion() {
+        Product product = new Product("콜", 1000, 10, null);
+        CartItem item = new CartItem(product, 5);
+
+        int nonPromotionPrice = item.calculateNonPromotionPrice();
+        assertEquals(5000, nonPromotionPrice);
+    }
+
 }
