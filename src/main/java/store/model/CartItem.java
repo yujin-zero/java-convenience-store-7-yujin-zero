@@ -36,6 +36,9 @@ public class CartItem {
 
     public Map<String, Integer> freeProduct() {
         String freeProductName = product.getName();
+        if (product.getPromotion() == null) {
+            return Collections.emptyMap();
+        }
         int freeProductCount = product.getPromotion().calculateFreeItems(quantity);
 
         if (freeProductCount > 0) {
