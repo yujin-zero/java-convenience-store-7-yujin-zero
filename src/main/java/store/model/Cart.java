@@ -66,4 +66,14 @@ public class Cart {
 
         return freeProducts;
     }
+
+    public Map<String, Integer> productCountInCart() {
+        Map<String, Integer> cartItems = new HashMap<>();
+
+        for (CartItem item : cart) {
+            cartItems.put(item.getProduct().getName(), item.getQuantity());
+        }
+
+        return cartItems;
+    }
 }

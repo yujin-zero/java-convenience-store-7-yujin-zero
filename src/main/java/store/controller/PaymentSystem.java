@@ -65,7 +65,7 @@ public class PaymentSystem {
 
     private Receipt generateReceipt(boolean isMember) {
         return new Receipt(
-                cart.calculateFreeProducts(),
+                cart.productCountInCart(),
                 cart.calculateTotalPrice(),
                 cart.calculateTotalPromotionDiscount(),
                 cart.calculateTotalMembershiptDiscount(isMember),
