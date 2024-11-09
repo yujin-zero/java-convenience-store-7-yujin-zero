@@ -21,6 +21,16 @@ public class CartItem {
         return promotionDiscountAmount;
     }
 
+    public int calculateNonPromotionrice() {
+        if (product.getPromotion() == null || !product.getPromotion().isApplicable(quantity)) {
+            return product.getPrice() * quantity;
+        }
+        int promotionAppliedItemCount = product.getPromotion().calculateAppliedItemCount(quantity);
+        int remainItemCount = quantity - promotionAppliedItemCount;
+
+        return remainItemCount * product.getPrice();
+    }
+
     public int getQuantity() {
         return quantity;
     }
