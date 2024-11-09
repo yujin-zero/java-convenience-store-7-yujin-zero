@@ -2,6 +2,7 @@ package store.view;
 
 import java.util.List;
 import store.model.Product;
+import store.model.Receipt;
 
 public class OutputView {
 
@@ -16,6 +17,26 @@ public class OutputView {
             String stockStatus = getStockStatus(product);
             System.out.printf("- %s %d원 %s %s\n", product.getName(), product.getPrice(), stockStatus, promotionInfo);
         });
+        System.out.println();
+    }
+
+    public static void printReceipt(Receipt receipt) {
+        System.out.println("==============W 편의점================");
+        System.out.println("상품명\t\t수량\t금액");
+        receipt.getPurchasedItems().forEach((item, quantity) ->
+                System.out.printf("%s\t\t%d\t%d\n", item, quantity, quantity * 1000) // 예시 가격 적용
+        );
+
+        System.out.println("=============증정 상품===============");
+        receipt.getFreeItems().forEach((item, quantity) ->
+                System.out.printf("%s\t\t%d\n", item, quantity)
+        );
+
+        System.out.println("====================================");
+        System.out.printf("총구매액\t\t\t%d\n", receipt.getTotalPrice());
+        System.out.printf("행사할인\t\t\t-%d\n", receipt.getTotalPromotionDiscount());
+        System.out.printf("멤버십할인\t\t\t-%d\n", receipt.getTotalMembershipDiscount());
+        System.out.printf("내실돈\t\t\t%d\n", receipt.getFinalAmount());
     }
 
     public static void printErrorMessage(String errorMessage) {
