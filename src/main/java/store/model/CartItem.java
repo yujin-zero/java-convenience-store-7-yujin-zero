@@ -24,7 +24,7 @@ public class CartItem {
         return promotionDiscountAmount;
     }
 
-    public int calculateNonPromotionrice() {
+    public int calculateNonPromotionPrice() {
         if (product.getPromotion() == null || !product.getPromotion().isApplicable(quantity)) {
             return product.getPrice() * quantity;
         }

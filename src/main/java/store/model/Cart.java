@@ -30,5 +30,19 @@ public class Cart {
                 .sum();
     }
 
+    public int calculateTotalMembershiptDiscount(boolean member) {
+        if (!member) {
+            return 0;
+        }
+        int nonPromotionPrice = calculateTotalNonPromotionAmount();
+        int membershiptDiscountPrice = MembershipDiscount.calculateDiscountAmount(nonPromotionPrice);
 
+        return membershiptDiscountPrice;
+    }
+
+    private int calculateTotalNonPromotionAmount() {
+        return cart.stream()
+                .mapToInt(CartItem::calculateNonPromotionPrice)
+                .sum();
+    }
 }
