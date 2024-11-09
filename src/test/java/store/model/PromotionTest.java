@@ -14,17 +14,16 @@ class PromotionTest {
     public void testIsApplicable() {
         Promotion promotion = new Promotion("탄산2+1", 3, 1, LocalDate.of(2024, 11, 1).atStartOfDay(),
                 LocalDate.of(2024, 12, 1).atStartOfDay());
-        Product product = new Product("콜라", 1000, 10, promotion);
 
-        boolean applicable = promotion.isApplicable(product, 5);
+        boolean applicable = promotion.isApplicable(5);
         assertTrue(applicable, "프로모션 적용이 가능해야 합니다.");
 
         Promotion expiredPromotion = new Promotion("탄산2+1", 2, 1,
                 LocalDate.of(2023, 11, 1).atStartOfDay(), LocalDate.of(2023, 12, 1).atStartOfDay());
-        boolean notApplicable = expiredPromotion.isApplicable(product, 5);
+        boolean notApplicable = expiredPromotion.isApplicable(5);
         assertEquals(false, notApplicable, "프로모션 적용이 불가능해야 합니다.");
 
-        boolean insufficientQuantity = promotion.isApplicable(product, 2);
+        boolean insufficientQuantity = promotion.isApplicable(2);
         assertEquals(false, insufficientQuantity, "구매 수량이 부족한 경우 프로모션 적용이 불가능해야 합니다.");
     }
 

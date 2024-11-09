@@ -18,7 +18,7 @@ public class Promotion {
         this.endDate = endDate;
     }
 
-    public boolean isApplicable(Product product, int quantity) {
+    public boolean isApplicable(int quantity) {
         LocalDateTime currentDate = DateTimes.now();
 
         return (currentDate.isAfter(startDate) || currentDate.isEqual(startDate)) && (currentDate.isBefore(endDate)
