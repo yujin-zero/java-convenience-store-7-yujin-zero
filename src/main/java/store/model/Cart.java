@@ -1,7 +1,9 @@
 package store.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Cart {
     private List<CartItem> cart;
@@ -52,5 +54,16 @@ public class Cart {
         int totalMembershipDiscount = calculateTotalMembershiptDiscount(member);
 
         return totalPrice - totalPromotionDiscount - totalMembershipDiscount;
+    }
+
+    public Map<String, Integer> calculateFreeProducts() {
+        Map<String, Integer> freeProducts = new HashMap<>();
+
+        for (CartItem item : cart) {
+            Map<String, Integer> freeProduct = item.freeProduct();
+            freeProduct.forEach(freeProducts::put);
+        }
+
+        return freeProducts;
     }
 }
