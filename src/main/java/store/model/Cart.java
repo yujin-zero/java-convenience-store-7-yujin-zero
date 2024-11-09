@@ -45,4 +45,12 @@ public class Cart {
                 .mapToInt(CartItem::calculateNonPromotionPrice)
                 .sum();
     }
+
+    public int calculateFinalPrice(boolean member) {
+        int totalPrice = calculateTotalPrice();
+        int totalPromotionDiscount = calculateTotalPromotionDiscount();
+        int totalMembershipDiscount = calculateTotalMembershiptDiscount(member);
+
+        return totalPrice - totalPromotionDiscount - totalMembershipDiscount;
+    }
 }
