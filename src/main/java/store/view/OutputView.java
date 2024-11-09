@@ -24,7 +24,7 @@ public class OutputView {
         System.out.println("==============W 편의점================");
         System.out.println("상품명\t\t수량\t금액");
         receipt.getPurchasedItems().forEach((item, quantity) ->
-                System.out.printf("%s\t\t%d\t%d\n", item, quantity, quantity * 1000) // 예시 가격 적용
+                System.out.printf("%s\t\t%d\t%d\n", item.getName(), quantity, quantity * item.getPrice())
         );
 
         System.out.println("=============증정 상품===============");
@@ -33,11 +33,12 @@ public class OutputView {
         );
 
         System.out.println("====================================");
-        System.out.printf("총구매액\t\t\t%d\n", receipt.getTotalPrice());
+        System.out.printf("총구매액\t\t%d\t%d\n", receipt.getTotalItemCount(), receipt.getTotalPrice());
         System.out.printf("행사할인\t\t\t-%d\n", receipt.getTotalPromotionDiscount());
         System.out.printf("멤버십할인\t\t\t-%d\n", receipt.getTotalMembershipDiscount());
         System.out.printf("내실돈\t\t\t%d\n", receipt.getFinalAmount());
     }
+
 
     public static void printErrorMessage(String errorMessage) {
         System.out.printf("[ERROR] %s\n", errorMessage);

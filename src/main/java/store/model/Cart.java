@@ -69,11 +69,11 @@ public class Cart {
         return freeProducts;
     }
 
-    public Map<String, Integer> productCountInCart() {
-        Map<String, Integer> cartItems = new LinkedHashMap<>();
+    public Map<Product, Integer> productCountInCart() {
+        Map<Product, Integer> cartItems = new LinkedHashMap<>();
 
         for (CartItem item : cart) {
-            cartItems.put(item.getProduct().getName(), item.getQuantity());
+            cartItems.put(item.getProduct(), item.getQuantity());
         }
 
         return cartItems;

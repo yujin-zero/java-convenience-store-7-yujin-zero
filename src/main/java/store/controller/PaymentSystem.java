@@ -70,6 +70,7 @@ public class PaymentSystem {
                 cart.calculateTotalPromotionDiscount(),
                 cart.calculateTotalMembershiptDiscount(isMember),
                 cart.calculateFinalPrice(isMember),
+                cart.calculateItemCountInCart(),
                 cart.calculateFreeProducts()
         );
     }
