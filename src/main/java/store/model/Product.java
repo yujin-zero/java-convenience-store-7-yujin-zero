@@ -28,4 +28,8 @@ public class Product {
     public Promotion getPromotion() {
         return promotion;
     }
+
+    public int getQuantity() {
+        return quantity;
+    }
 }
