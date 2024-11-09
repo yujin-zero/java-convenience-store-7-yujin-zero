@@ -1,8 +1,10 @@
 package store.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +57,7 @@ class CartItemTest {
 
     @Test
     @DisplayName("프로모션 없을 때 프로모션 아닌 상품 금액 테스트")
-    public void testCalculateNonPromotionPrice_WithNoPromotion() {
+    public void testCalculateNonPromotionPrice_NoPromotion() {
         Product product = new Product("콜", 1000, 10, null);
         CartItem item = new CartItem(product, 5);
 
@@ -63,4 +65,25 @@ class CartItemTest {
         assertEquals(5000, nonPromotionPrice);
     }
 
+    @Test
+    @DisplayName("증정 상품 반환 테스트")
+    public void testFreeProduct() {
+        Promotion promotion = new Promotion("탄산2+1", 2, 1, LocalDateTime.now().minusDays(1),
+                LocalDateTime.now().plusDays(1));
+        Product product = new Product("콜라", 1000, 10, promotion);
+        CartItem item = new CartItem(product, 10);
+
+        Map<String, Integer> freeProducts = item.freeProduct();
+        assertEquals(3, freeProducts.get("콜라"));
+    }
+
+    @Test
+    @DisplayName("프로모션 없을 때 증정 상품 반환 테스트")
+    public void testFreeProduct_NoPromotion() {
+        Product product = new Product("콜라", 1000, 10, null);
+        CartItem item = new CartItem(product, 5);
+
+        Map<String, Integer> freeProducts = item.freeProduct();
+        assertTrue(freeProducts.isEmpty());
+    }
 }
