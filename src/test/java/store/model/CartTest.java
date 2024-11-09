@@ -56,4 +56,18 @@ class CartTest {
         int totalMembershipDiscount = cart.calculateTotalMembershiptDiscount(false);
         assertEquals(0, totalMembershipDiscount);
     }
+
+    @Test
+    @DisplayName("최종 금액 계산 테스트 - 멤버십 할인 적용")
+    public void testCalculateFinalPrice_Member() {
+        int finalPrice = cart.calculateFinalPrice(true);
+        assertEquals(2280, finalPrice);
+    }
+
+    @Test
+    @DisplayName("최종 금액 계산 테스트 - 멤버십 할인 미적용")
+    public void testCalculateFinalPrice_NoMember() {
+        int finalPrice = cart.calculateFinalPrice(false);
+        assertEquals(2400, finalPrice);
+    }
 }
