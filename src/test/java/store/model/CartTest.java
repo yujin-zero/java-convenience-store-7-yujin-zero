@@ -1,8 +1,10 @@
 package store.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,5 +71,30 @@ class CartTest {
     public void testCalculateFinalPrice_NoMember() {
         int finalPrice = cart.calculateFinalPrice(false);
         assertEquals(2400, finalPrice);
+    }
+
+    @Test
+    @DisplayName("총 증정삼품 반환 테스트")
+    public void testCalculateFreeProducts_Promotion() {
+        Promotion promotion2 = new Promotion("반짝할인", 1, 1, LocalDateTime.now().minusDays(1),
+                LocalDateTime.now().plusDays(1));
+        Product product2 = new Product("사탕", 200, 10, promotion2);
+        cart.addCartItem(new CartItem(product2, 3));
+
+        Map<String, Integer> freeProducts = cart.calculateFreeProducts();
+
+        assertEquals(1, freeProducts.get("콜라"));
+        assertEquals(1, freeProducts.get("사탕"));
+    }
+
+    @Test
+    @DisplayName("총 증정삼품 반환 테스트 - 프로모션 미적용")
+    public void testCalculateFreeProducts_NoPromotion() {
+        Cart cartWithoutPromotion = new Cart();
+        Product productWithoutPromotion = new Product("아이스크림", 1000, 10, null);
+        cartWithoutPromotion.addCartItem(new CartItem(productWithoutPromotion, 3));
+
+        Map<String, Integer> freeProducts = cartWithoutPromotion.calculateFreeProducts();
+        assertTrue(freeProducts.isEmpty());
     }
 }
