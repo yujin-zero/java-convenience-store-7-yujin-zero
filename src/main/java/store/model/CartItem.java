@@ -1,5 +1,8 @@
 package store.model;
 
+import java.util.Collections;
+import java.util.Map;
+
 public class CartItem {
     private Product product;
     private int quantity;
@@ -29,6 +32,16 @@ public class CartItem {
         int remainItemCount = quantity - promotionAppliedItemCount;
 
         return remainItemCount * product.getPrice();
+    }
+
+    public Map<String, Integer> freeProduct() {
+        String freeProductName = product.getName();
+        int freeProductCount = product.getPromotion().calculateFreeItems(quantity);
+
+        if (freeProductCount > 0) {
+            return Collections.singletonMap(freeProductName, freeProductCount);
+        }
+        return Collections.emptyMap();
     }
 
     public int getQuantity() {
