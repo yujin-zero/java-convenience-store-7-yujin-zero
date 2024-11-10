@@ -39,6 +39,7 @@ public class PaymentSystem {
     }
 
     private void processPurchase(Map<String, Integer> purchasedItems) {
+        cart.clear();
         purchasedItems.forEach((productName, quantity) -> addProductToCart(productName, quantity));
 
         boolean isMember = inputView.isMembershipDiscount();

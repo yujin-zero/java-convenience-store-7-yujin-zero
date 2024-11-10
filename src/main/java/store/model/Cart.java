@@ -92,4 +92,8 @@ public class Cart {
 
         return combinedItems;
     }
+
+    public void clear() {
+        cart.clear();
+    }
 }
