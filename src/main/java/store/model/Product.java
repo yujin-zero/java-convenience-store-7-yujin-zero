@@ -26,6 +26,10 @@ public class Product {
         return 0;
     }
 
+    public int calculateNonAppliedQuantity(int totalQuantity) {
+        return totalQuantity % (promotion.getBuy() + promotion.getGet());
+    }
+
     public String getName() {
         return name;
     }

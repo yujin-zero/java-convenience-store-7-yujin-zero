@@ -58,9 +58,21 @@ public class PaymentSystem {
             return;
         }
 
-        int promoQuantity = addPromoProductToCart(productName, quantity);
+        int promoQuantity = (promoProduct != null) ? Math.min(quantity, promoProduct.getQuantity()) : 0;
+        int nonAppliedPromoQuantity = promoProduct.calculateNonAppliedQuantity(promoQuantity);
+        if (promoQuantity > 0 && quantity != (promoQuantity - nonAppliedPromoQuantity)) {
+            if (inputView.confirmStandartPriceForRemainder(productName,
+                    quantity - (promoQuantity - nonAppliedPromoQuantity))) {
+                addPromoProductToCart(productName, quantity);
+                addGeneralProductToCart(productName, quantity - promoQuantity);
+            } else {
+                addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
+            }
+            return;
+        }
 
         addGeneralProductToCart(productName, quantity - promoQuantity);
+
     }
 
 
