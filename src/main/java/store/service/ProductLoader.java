@@ -24,12 +24,39 @@ public class ProductLoader {
             while ((line = br.readLine()) != null) {
                 Product product = parseProductLine(line);
                 products.add(product);
+                addOrSkipGeneralProduct(br, products, product);
             }
         } catch (IOException e) {
             throw new RuntimeException("파일을 읽는 도중 오류가 발생했습니다: " + filePath, e);
         }
 
         return products;
+    }
+
+    private void addOrSkipGeneralProduct(BufferedReader br, List<Product> products, Product promoProduct)
+            throws IOException {
+        if (promoProduct.getPromotion() == null) {
+            return;
+        }
+
+        br.mark(1000);
+        String nextLine = br.readLine();
+
+        if (nextLine == null || !isNextLineGeneralProduct(nextLine, promoProduct, products)) {
+            products.add(new Product(promoProduct.getName(), promoProduct.getPrice(), 0, null));
+            if (nextLine != null) {
+                br.reset();
+            }
+        }
+    }
+
+    private boolean isNextLineGeneralProduct(String nextLine, Product promoProduct, List<Product> products) {
+        Product nextProduct = parseProductLine(nextLine);
+        if (nextProduct.getName().equals(promoProduct.getName()) && nextProduct.getPromotion() == null) {
+            products.add(nextProduct);
+            return true;
+        }
+        return false;
     }
 
     private Product parseProductLine(String line) {
