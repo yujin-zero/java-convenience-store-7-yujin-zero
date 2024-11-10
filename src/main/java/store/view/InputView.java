@@ -37,6 +37,12 @@ public class InputView {
         return input.equalsIgnoreCase("Y");
     }
 
+    public static boolean confirmStandartPriceForRemainder(String productName, int remainderQuantity) {
+        System.out.printf("현재 %s %d개는 프로모션 할인이 적용되지 않습니다. 그래도 구매하시겠습니까? (Y/N)\n", productName, remainderQuantity);
+        String input = Console.readLine();
+        return input.equalsIgnoreCase("Y");
+    }
+
     private static Map<String, Integer> parsePurchaseInput(String input) {
         Map<String, Integer> items = new LinkedHashMap<>();
         StringTokenizer pairTokenizer = new StringTokenizer(input.replaceAll("\\[|\\]", ""), ",");
