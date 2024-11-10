@@ -3,7 +3,7 @@ package store.model;
 import java.util.Map;
 
 public class Receipt {
-    private final Map<Product, Integer> purchasedItems;
+    private final Map<String, ItemDetail> purchasedItems;
     private final int totalPrice;
     private final int totalPromotionDiscount;
     private final int totalMembershipDiscount;
@@ -11,7 +11,7 @@ public class Receipt {
     private final int totalItemCount;
     private final Map<String, Integer> freeItems;
 
-    public Receipt(Map<Product, Integer> purchasedItems, int totalPrice, int totalPromotionDiscount,
+    public Receipt(Map<String, ItemDetail> purchasedItems, int totalPrice, int totalPromotionDiscount,
                    int totalMembershipDiscount, int finalAmount, int totalItemCount, Map<String, Integer> freeItems) {
         this.purchasedItems = purchasedItems;
         this.totalPrice = totalPrice;
@@ -22,7 +22,7 @@ public class Receipt {
         this.freeItems = freeItems;
     }
 
-    public Map<Product, Integer> getPurchasedItems() {
+    public Map<String, ItemDetail> getPurchasedItems() {
         return purchasedItems;
     }
 

@@ -23,9 +23,11 @@ public class OutputView {
     public static void printReceipt(Receipt receipt) {
         System.out.println("==============W 편의점================");
         System.out.println("상품명\t\t수량\t금액");
-        receipt.getPurchasedItems().forEach((item, quantity) ->
-                System.out.printf("%s\t\t%d\t%d\n", item.getName(), quantity, quantity * item.getPrice())
-        );
+        receipt.getPurchasedItems().forEach((itemName, detail) -> {
+            int quantity = detail.getQuantity();
+            int price = detail.getPrice();
+            System.out.printf("%s\t\t%d\t%,d\n", itemName, quantity, quantity * price);
+        });
 
         System.out.println("=============증정 상품===============");
         receipt.getFreeItems().forEach((item, quantity) ->

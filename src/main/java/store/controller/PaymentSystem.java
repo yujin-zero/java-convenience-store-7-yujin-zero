@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import store.model.Cart;
 import store.model.CartItem;
+import store.model.ItemDetail;
 import store.model.Product;
 import store.model.Receipt;
 import store.view.InputView;
@@ -85,8 +86,9 @@ public class PaymentSystem {
     }
 
     private Receipt generateReceipt(boolean isMember) {
+        Map<String, ItemDetail> combinedItems = cart.getCombinedItemDetails();
         return new Receipt(
-                cart.productCountInCart(),
+                combinedItems,
                 cart.calculateTotalPrice(),
                 cart.calculateTotalPromotionDiscount(),
                 cart.calculateTotalMembershiptDiscount(isMember),

@@ -14,7 +14,6 @@ public class Cart {
     }
 
     public void addCartItem(CartItem item) {
-        System.out.println(item.getProduct().getName());
         cart.add(item);
     }
 
@@ -77,5 +76,20 @@ public class Cart {
         }
 
         return cartItems;
+    }
+
+    public Map<String, ItemDetail> getCombinedItemDetails() {
+        Map<String, ItemDetail> combinedItems = new LinkedHashMap<>();
+
+        for (CartItem item : cart) {
+            String itemName = item.getProduct().getName();
+            int quantity = item.getQuantity();
+            int price = item.getProduct().getPrice();
+
+            combinedItems.putIfAbsent(itemName, new ItemDetail(0, price));
+            combinedItems.get(itemName).addQuantity(quantity); // 수량을 추가
+        }
+
+        return combinedItems;
     }
 }
