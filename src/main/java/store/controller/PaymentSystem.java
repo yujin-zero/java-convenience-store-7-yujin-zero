@@ -47,10 +47,22 @@ public class PaymentSystem {
     }
 
     private void addProductToCart(String productName, int quantity) {
+        Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
+        Product generalProduct = findProductByNameAndPromotionStatus(productName, false);
+
+        int promoProductQuantity = (promoProduct != null) ? promoProduct.getQuantity() : 0;
+        int generalProductQuantity = (generalProduct != null) ? generalProduct.getQuantity() : 0;
+
+        if (quantity > promoProductQuantity + generalProductQuantity) {
+            outputView.printErrorMessage("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+            return;
+        }
+
         int promoQuantity = addPromoProductToCart(productName, quantity);
 
         addGeneralProductToCart(productName, quantity - promoQuantity);
     }
+
 
     private int addPromoProductToCart(String productName, int quantity) {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
@@ -102,8 +114,6 @@ public class PaymentSystem {
         if (isValidProduct(generalProduct, remainingQuantity)) {
             cart.addCartItem(new CartItem(generalProduct, remainingQuantity));
             generalProduct.reduceQuantity(remainingQuantity);
-        } else {
-            outputView.printErrorMessage("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
         }
     }
 
