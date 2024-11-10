@@ -15,7 +15,7 @@ public class OutputView {
         products.forEach(product -> {
             String promotionInfo = getPromotionInfo(product);
             String stockStatus = getStockStatus(product);
-            System.out.printf("- %s %d원 %s %s\n", product.getName(), product.getPrice(), stockStatus, promotionInfo);
+            System.out.printf("- %s %,d원 %s%s\n", product.getName(), product.getPrice(), stockStatus, promotionInfo);
         });
         System.out.println();
     }
@@ -35,10 +35,10 @@ public class OutputView {
         );
 
         System.out.println("====================================");
-        System.out.printf("총구매액\t\t%d\t%d\n", receipt.getTotalItemCount(), receipt.getTotalPrice());
-        System.out.printf("행사할인\t\t\t-%d\n", receipt.getTotalPromotionDiscount());
-        System.out.printf("멤버십할인\t\t\t-%d\n", receipt.getTotalMembershipDiscount());
-        System.out.printf("내실돈\t\t\t%d\n", receipt.getFinalAmount());
+        System.out.printf("총구매액\t\t%d\t%,d\n", receipt.getTotalItemCount(), receipt.getTotalPrice());
+        System.out.printf("행사할인\t\t\t-%,d\n", receipt.getTotalPromotionDiscount());
+        System.out.printf("멤버십할인\t\t\t-%,d\n", receipt.getTotalMembershipDiscount());
+        System.out.printf("내실돈\t\t\t%,d\n", receipt.getFinalAmount());
     }
 
 

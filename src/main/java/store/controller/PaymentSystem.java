@@ -68,7 +68,7 @@ public class PaymentSystem {
             cart.addCartItem(new CartItem(generalProduct, remainingQuantity));
             generalProduct.reduceQuantity(remainingQuantity);
         } else {
-            outputView.printErrorMessage("재고가 부족하거나 잘못된 상품명입니다.");
+            outputView.printErrorMessage("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
         }
     }
 
