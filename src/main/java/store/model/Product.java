@@ -17,6 +17,15 @@ public class Product {
         quantity -= orderQuantity;
     }
 
+    public int calculateAddPromotionItem(int quantity) {
+        int remainCount = quantity % (promotion.getBuy() + promotion.getGet());
+        int addCount = (promotion.getBuy() + promotion.getGet()) - remainCount;
+        if (remainCount > 0 && remainCount >= promotion.getBuy() && addCount <= this.quantity) {
+            return addCount;
+        }
+        return 0;
+    }
+
     public String getName() {
         return name;
     }
