@@ -43,24 +43,45 @@ public class PaymentSystem {
     }
 
     private void addProductToCart(String productName, int quantity) {
-        Product product = findProductByName(productName);
-        if (!isValidProduct(product, quantity)) {
-            outputView.printErrorMessage("재고가 부족하거나 잘못된 상품명입니다.");
+        int promoQuantity = addPromoProductToCart(productName, quantity);
+        addGeneralProductToCart(productName, quantity - promoQuantity);
+    }
+
+    private int addPromoProductToCart(String productName, int quantity) {
+        Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
+        int promoQuantity = (promoProduct != null) ? Math.min(quantity, promoProduct.getQuantity()) : 0;
+        if (promoQuantity > 0) {
+            cart.addCartItem(new CartItem(promoProduct, promoQuantity));
+            promoProduct.reduceQuantity(promoQuantity);
+        }
+        return promoQuantity;
+    }
+
+    private void addGeneralProductToCart(String productName, int remainingQuantity) {
+        if (remainingQuantity <= 0) {
             return;
         }
-        cart.addCartItem(new CartItem(product, quantity));
-        product.reduceQuantity(quantity);
+
+        Product generalProduct = findProductByNameAndPromotionStatus(productName, false);
+        if (isValidProduct(generalProduct, remainingQuantity)) {
+            cart.addCartItem(new CartItem(generalProduct, remainingQuantity));
+            generalProduct.reduceQuantity(remainingQuantity);
+        } else {
+            outputView.printErrorMessage("재고가 부족하거나 잘못된 상품명입니다.");
+        }
+    }
+
+    private Product findProductByNameAndPromotionStatus(String productName, boolean isPromotion) {
+        return products.stream()
+                .filter(product -> product.getName().equalsIgnoreCase(productName)
+                        && ((isPromotion && product.getPromotion() != null)
+                        || (!isPromotion && product.getPromotion() == null)))
+                .findFirst()
+                .orElse(null);
     }
 
     private boolean isValidProduct(Product product, int quantity) {
         return product != null && product.getQuantity() >= quantity;
-    }
-
-    private Product findProductByName(String productName) {
-        return products.stream()
-                .filter(product -> product.getName().equalsIgnoreCase(productName))
-                .findFirst()
-                .orElse(null);
     }
 
     private Receipt generateReceipt(boolean isMember) {
