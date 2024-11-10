@@ -31,32 +31,66 @@ public class PaymentSystem {
     private void run() {
         while (true) {
             outputView.printInventory(products);
-            processPurchase(inputView.getPurchaseItems(), inputView.isMembershipDiscount());
+            processPurchase(inputView.getPurchaseItems());
             if (!inputView.isAdditionalPurchase()) {
                 break;
             }
         }
     }
 
-    private void processPurchase(Map<String, Integer> purchasedItems, boolean isMember) {
+    private void processPurchase(Map<String, Integer> purchasedItems) {
         purchasedItems.forEach((productName, quantity) -> addProductToCart(productName, quantity));
+
+        boolean isMember = inputView.isMembershipDiscount();
         outputView.printReceipt(generateReceipt(isMember));
     }
 
     private void addProductToCart(String productName, int quantity) {
         int promoQuantity = addPromoProductToCart(productName, quantity);
+
         addGeneralProductToCart(productName, quantity - promoQuantity);
     }
 
     private int addPromoProductToCart(String productName, int quantity) {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
         int promoQuantity = (promoProduct != null) ? Math.min(quantity, promoProduct.getQuantity()) : 0;
+
+        if (promoQuantity > 0 && (quantity - promoQuantity != 0)) {
+            return addPromoItemsDirectly(promoProduct, promoQuantity);
+        }
+
         if (promoQuantity > 0) {
-            cart.addCartItem(new CartItem(promoProduct, promoQuantity));
-            promoProduct.reduceQuantity(promoQuantity);
+            processFullyPromoProduct(promoProduct, productName, quantity, promoQuantity);
         }
         return promoQuantity;
     }
+
+    private int addPromoItemsDirectly(Product promoProduct, int promoQuantity) {
+        cart.addCartItem(new CartItem(promoProduct, promoQuantity));
+        promoProduct.reduceQuantity(promoQuantity);
+        return promoQuantity;
+    }
+
+    private void processFullyPromoProduct(Product promoProduct, String productName, int quantity, int promoQuantity) {
+        int addPromoItemCount = promoProduct.calculateAddPromotionItem(quantity);
+
+        if (addPromoItemCount > 0 && inputView.confirmAddtionPromotionItem(productName, addPromoItemCount)) {
+            addCombinedPromoItems(promoProduct, promoQuantity + addPromoItemCount);
+        } else {
+            addOnlyPromoItems(promoProduct, promoQuantity);
+        }
+    }
+
+    private void addCombinedPromoItems(Product promoProduct, int totalQuantity) {
+        cart.addCartItem(new CartItem(promoProduct, totalQuantity));
+        promoProduct.reduceQuantity(totalQuantity);
+    }
+
+    private void addOnlyPromoItems(Product promoProduct, int promoQuantity) {
+        cart.addCartItem(new CartItem(promoProduct, promoQuantity));
+        promoProduct.reduceQuantity(promoQuantity);
+    }
+
 
     private void addGeneralProductToCart(String productName, int remainingQuantity) {
         if (remainingQuantity <= 0) {
