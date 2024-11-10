@@ -46,6 +46,7 @@ public class PaymentSystem {
         outputView.printReceipt(generateReceipt(isMember));
     }
 
+
     private void addProductToCart(String productName, int quantity) {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
         Product generalProduct = findProductByNameAndPromotionStatus(productName, false);
@@ -58,21 +59,32 @@ public class PaymentSystem {
             return;
         }
 
-        int promoQuantity = (promoProduct != null) ? Math.min(quantity, promoProduct.getQuantity()) : 0;
-        int nonAppliedPromoQuantity = promoProduct.calculateNonAppliedQuantity(promoQuantity);
-        if (promoQuantity > 0 && quantity != (promoQuantity - nonAppliedPromoQuantity)) {
-            if (inputView.confirmStandartPriceForRemainder(productName,
-                    quantity - (promoQuantity - nonAppliedPromoQuantity))) {
-                addPromoProductToCart(productName, quantity);
-                addGeneralProductToCart(productName, quantity - promoQuantity);
-            } else {
-                addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
-            }
+        // 프로모션이 적용 가능한지 확인
+        int promoQuantity = 0;
+        if (promoProduct != null && promoProduct.getPromotion().isApplicable(quantity)) {
+            promoQuantity = Math.min(quantity, promoProduct.getQuantity());
+        }
+
+        if (promoQuantity == 0) {
+            // 프로모션이 적용되지 않거나 수량이 부족할 때 일반 제품으로 처리
+            addGeneralProductToCart(productName, quantity);
             return;
         }
 
-        addGeneralProductToCart(productName, quantity - promoQuantity);
+        int nonAppliedPromoQuantity = promoProduct.calculateNonAppliedQuantity(promoQuantity);
+        if (quantity != (promoQuantity - nonAppliedPromoQuantity)) {
+            int remainingQuantity = quantity - (promoQuantity - nonAppliedPromoQuantity);
 
+            if (inputView.confirmStandartPriceForRemainder(productName, remainingQuantity)) {
+                addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
+                addGeneralProductToCart(productName, remainingQuantity);
+            } else {
+                addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
+            }
+        } else {
+            addPromoProductToCart(productName, promoQuantity);
+            addGeneralProductToCart(productName, quantity - promoQuantity);
+        }
     }
 
 
