@@ -2,8 +2,10 @@ package store.model;
 
 import camp.nextstep.edu.missionutils.DateTimes;
 import java.time.LocalDateTime;
+import store.constants.PromotionType;
 
 public class Promotion {
+    private PromotionType type;
     private String name;
     private int buy;
     private int get;
@@ -11,6 +13,7 @@ public class Promotion {
     private LocalDateTime endDate;
 
     public Promotion(String name, int buy, int get, LocalDateTime startDate, LocalDateTime endDate) {
+        this.type = PromotionType.fromName(name);
         this.name = name;
         this.buy = buy;
         this.get = get;
