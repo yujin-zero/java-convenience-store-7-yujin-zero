@@ -59,8 +59,15 @@ public class PaymentSystem {
     }
 
     private boolean isQuantityExceedsAvailableStock(int quantity, Product promoProduct, Product generalProduct) {
-        int promoProductQuantity = (promoProduct != null) ? promoProduct.getQuantity() : 0;
-        int generalProductQuantity = (generalProduct != null) ? generalProduct.getQuantity() : 0;
+        int promoProductQuantity = 0;
+        int generalProductQuantity = 0;
+
+        if (promoProduct != null) {
+            promoProductQuantity = promoProduct.getQuantity();
+        }
+        if (generalProduct != null) {
+            generalProductQuantity = generalProduct.getQuantity();
+        }
         return quantity > promoProductQuantity + generalProductQuantity;
     }
 
@@ -96,7 +103,10 @@ public class PaymentSystem {
 
     private int addPromoProductToCart(String productName, int quantity) {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
-        int promoQuantity = (promoProduct != null) ? Math.min(quantity, promoProduct.getQuantity()) : 0;
+        int promoQuantity = 0;
+        if (promoProduct != null) {
+            promoQuantity = Math.min(quantity, promoProduct.getQuantity());
+        }
 
         if (promoQuantity > 0 && (quantity - promoQuantity != 0)) {
             return addPromoItemsDirectly(promoProduct, promoQuantity);
