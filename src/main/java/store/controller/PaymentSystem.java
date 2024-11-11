@@ -113,6 +113,7 @@ public class PaymentSystem {
             addCombinedPromoItems(promoProduct, promoQuantity + addPromoItemCount);
             return true;
         }
+        addOnlyPromoItems(promoProduct, quantity);
         return false;
     }
 
@@ -165,7 +166,7 @@ public class PaymentSystem {
             return;
         }
 
-        addOnlyPromoItems(promoProduct, promoQuantity);
+        addOnlyPromoItems(promoProduct, quantity);
     }
 
 
