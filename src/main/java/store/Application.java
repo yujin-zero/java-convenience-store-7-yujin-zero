@@ -11,12 +11,17 @@ import store.view.InputView;
 import store.view.OutputView;
 
 public class Application {
+
+    private static final String PROMOTIONS_FILE_PATH = "src/main/resources/promotions.md";
+    private static final String PRODUCTS_FILE_PATH = "src/main/resources/products.md";
+
+
     public static void main(String[] args) {
         PromotionLoader promotionLoader = new PromotionLoader();
-        List<Promotion> promotions = promotionLoader.loadPromotions("src/main/resources/promotions.md");
+        List<Promotion> promotions = promotionLoader.loadPromotions(PROMOTIONS_FILE_PATH);
 
         ProductLoader productLoader = new ProductLoader(promotions);
-        List<Product> products = productLoader.loadProduct("src/main/resources/products.md");
+        List<Product> products = productLoader.loadProduct(PRODUCTS_FILE_PATH);
 
         Cart cart = new Cart();
 
