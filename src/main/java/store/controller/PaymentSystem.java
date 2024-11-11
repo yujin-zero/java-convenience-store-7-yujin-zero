@@ -94,17 +94,45 @@ public class PaymentSystem {
                                          int nonAppliedPromoQuantity) {
         int remainingQuantity = quantity - (promoQuantity - nonAppliedPromoQuantity);
 
-        if (remainingQuantity > 0 && findProductByNameAndPromotionStatus(productName, true).getQuantity() < quantity
-                && inputView.confirmStandartPriceForRemainder(productName, remainingQuantity)) {
-            int pQuantity = addPromoProductToCart(productName, quantity);
-            addGeneralProductToCart(productName, quantity - pQuantity);
+        if (confirmAdditionalPromotionItems(productName, quantity, promoQuantity)) {
             return;
         }
 
+        if (confirmStandardPriceForRemainingItems(productName, quantity, remainingQuantity)) {
+            return;
+        }
+
+        addPromoAndGeneralItems(productName, quantity, promoQuantity, nonAppliedPromoQuantity);
+    }
+
+    private boolean confirmAdditionalPromotionItems(String productName, int quantity, int promoQuantity) {
+        Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
+        int addPromoItemCount = promoProduct.calculateAddPromotionItem(quantity);
+
+        if (addPromoItemCount > 0 && inputView.confirmAddtionPromotionItem(productName, addPromoItemCount)) {
+            addCombinedPromoItems(promoProduct, promoQuantity + addPromoItemCount);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean confirmStandardPriceForRemainingItems(String productName, int quantity, int remainingQuantity) {
+        Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
+
+        if (remainingQuantity > 0 && promoProduct.getQuantity() < quantity
+                && inputView.confirmStandartPriceForRemainder(productName, remainingQuantity)) {
+            int pQuantity = addPromoProductToCart(productName, quantity);
+            addGeneralProductToCart(productName, quantity - pQuantity);
+            return true;
+        }
+        return false;
+    }
+
+    private void addPromoAndGeneralItems(String productName, int quantity, int promoQuantity,
+                                         int nonAppliedPromoQuantity) {
         addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
         addGeneralProductToCart(productName, quantity - promoQuantity);
     }
-
 
     private int addPromoProductToCart(String productName, int quantity) {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
