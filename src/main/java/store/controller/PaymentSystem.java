@@ -24,7 +24,6 @@ public class PaymentSystem {
     }
 
     public void start() {
-        outputView.printWelcomeMessage();
         run();
     }
 
@@ -46,43 +45,50 @@ public class PaymentSystem {
         outputView.printReceipt(generateReceipt(isMember));
     }
 
-
     private void addProductToCart(String productName, int quantity) {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
         Product generalProduct = findProductByNameAndPromotionStatus(productName, false);
 
-        int promoProductQuantity = (promoProduct != null) ? promoProduct.getQuantity() : 0;
-        int generalProductQuantity = (generalProduct != null) ? generalProduct.getQuantity() : 0;
-
-        if (quantity > promoProductQuantity + generalProductQuantity) {
+        if (isQuantityExceedsAvailableStock(quantity, promoProduct, generalProduct)) {
             outputView.printErrorMessage("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
             return;
         }
 
-        // 프로모션이 적용 가능한지 확인
-        int promoQuantity = 0;
+        int promoQuantity = calculateApplicablePromoQuantity(quantity, promoProduct);
+        processProductAddition(productName, quantity, promoQuantity, promoProduct);
+    }
+
+    private boolean isQuantityExceedsAvailableStock(int quantity, Product promoProduct, Product generalProduct) {
+        int promoProductQuantity = (promoProduct != null) ? promoProduct.getQuantity() : 0;
+        int generalProductQuantity = (generalProduct != null) ? generalProduct.getQuantity() : 0;
+        return quantity > promoProductQuantity + generalProductQuantity;
+    }
+
+    private int calculateApplicablePromoQuantity(int quantity, Product promoProduct) {
         if (promoProduct != null && promoProduct.getPromotion().isApplicable(quantity)) {
-            promoQuantity = Math.min(quantity, promoProduct.getQuantity());
+            return Math.min(quantity, promoProduct.getQuantity());
         }
+        return 0;
+    }
 
+    private void processProductAddition(String productName, int quantity, int promoQuantity, Product promoProduct) {
         if (promoQuantity == 0) {
-            // 프로모션이 적용되지 않거나 수량이 부족할 때 일반 제품으로 처리
             addGeneralProductToCart(productName, quantity);
-            return;
-        }
-
-        int nonAppliedPromoQuantity = promoProduct.calculateNonAppliedQuantity(promoQuantity);
-        if (quantity != (promoQuantity - nonAppliedPromoQuantity)) {
-            int remainingQuantity = quantity - (promoQuantity - nonAppliedPromoQuantity);
-
-            if (inputView.confirmStandartPriceForRemainder(productName, remainingQuantity)) {
-                addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
-                addGeneralProductToCart(productName, remainingQuantity);
-            } else {
-                addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
-            }
         } else {
-            addPromoProductToCart(productName, promoQuantity);
+            int nonAppliedPromoQuantity = promoProduct.calculateNonAppliedQuantity(promoQuantity);
+            handleRemainingQuantity(productName, quantity, promoQuantity, nonAppliedPromoQuantity);
+        }
+    }
+
+    private void handleRemainingQuantity(String productName, int quantity, int promoQuantity,
+                                         int nonAppliedPromoQuantity) {
+        int remainingQuantity = quantity - (promoQuantity - nonAppliedPromoQuantity);
+
+        if (remainingQuantity > 0 && inputView.confirmStandartPriceForRemainder(productName, remainingQuantity)) {
+            addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
+            addGeneralProductToCart(productName, remainingQuantity);
+        } else {
+            addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
             addGeneralProductToCart(productName, quantity - promoQuantity);
         }
     }

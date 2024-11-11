@@ -20,18 +20,27 @@ public class ProductLoader {
         List<Product> products = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line = br.readLine();
-            while ((line = br.readLine()) != null) {
-                Product product = parseProductLine(line);
-                products.add(product);
-                addOrSkipGeneralProduct(br, products, product);
-            }
+            processFileLines(br, products);
         } catch (IOException e) {
-            throw new RuntimeException("파일을 읽는 도중 오류가 발생했습니다: " + filePath, e);
+            handleFileReadException(filePath, e);
         }
 
         return products;
     }
+
+    private void processFileLines(BufferedReader br, List<Product> products) throws IOException {
+        String line = br.readLine();
+        while ((line = br.readLine()) != null) {
+            Product product = parseProductLine(line);
+            products.add(product);
+            addOrSkipGeneralProduct(br, products, product);
+        }
+    }
+
+    private void handleFileReadException(String filePath, IOException e) {
+        throw new RuntimeException("파일을 읽는 도중 오류가 발생했습니다: " + filePath, e);
+    }
+
 
     private void addOrSkipGeneralProduct(BufferedReader br, List<Product> products, Product promoProduct)
             throws IOException {
@@ -61,21 +70,24 @@ public class ProductLoader {
 
     private Product parseProductLine(String line) {
         StringTokenizer tokenizer = new StringTokenizer(line, ",");
-
         String name = tokenizer.nextToken().trim();
         int price = Integer.parseInt(tokenizer.nextToken().trim());
         int quantity = Integer.parseInt(tokenizer.nextToken().trim());
-
-        Promotion promotion = null;
-        if (tokenizer.hasMoreTokens()) {
-            String promotionName = tokenizer.nextToken().trim();
-            if (!"null".equalsIgnoreCase(promotionName)) {
-                promotion = findPromotionByName(promotionName);
-            }
-        }
+        Promotion promotion = extractPromotion(tokenizer);
 
         return new Product(name, price, quantity, promotion);
     }
+
+    private Promotion extractPromotion(StringTokenizer tokenizer) {
+        if (tokenizer.hasMoreTokens()) {
+            String promotionName = tokenizer.nextToken().trim();
+            if (!"null".equalsIgnoreCase(promotionName)) {
+                return findPromotionByName(promotionName);
+            }
+        }
+        return null;
+    }
+
 
     private Promotion findPromotionByName(String promotionName) {
         for (Promotion promotion : promotions) {
