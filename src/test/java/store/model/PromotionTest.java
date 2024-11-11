@@ -46,4 +46,20 @@ class PromotionTest {
 
         assertEquals(2, freeItems, "증정 상품 수량이 예상과 일치하지 않습니다.");
     }
+
+    @Test
+    @DisplayName("프로모션이 적용된 총 항목 수 계산")
+    public void testCalculateAppliedItemCount() {
+        Promotion promotion = new Promotion("탄산2+1", 2, 1,
+                LocalDate.of(2024, 11, 1).atStartOfDay(), LocalDate.of(2024, 12, 1).atStartOfDay());
+
+        int appliedItemCount = promotion.calculateAppliedItemCount(7);
+        assertEquals(6, appliedItemCount, "프로모션이 적용된 총 항목 수가 예상과 다릅니다.");
+
+        appliedItemCount = promotion.calculateAppliedItemCount(5);
+        assertEquals(3, appliedItemCount, "프로모션이 적용된 총 항목 수가 예상과 다릅니다.");
+
+        appliedItemCount = promotion.calculateAppliedItemCount(2);
+        assertEquals(0, appliedItemCount, "구매 수량이 부족할 경우 적용된 항목 수는 0이어야 합니다.");
+    }
 }
