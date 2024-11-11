@@ -81,11 +81,13 @@ public class PaymentSystem {
     private void processProductAddition(String productName, int quantity, int promoQuantity, Product promoProduct) {
         if (promoQuantity == 0) {
             addGeneralProductToCart(productName, quantity);
-        } else {
-            int nonAppliedPromoQuantity = promoProduct.calculateNonAppliedQuantity(promoQuantity);
-            handleRemainingQuantity(productName, quantity, promoQuantity, nonAppliedPromoQuantity);
+            return;
         }
+
+        int nonAppliedPromoQuantity = promoProduct.calculateNonAppliedQuantity(promoQuantity);
+        handleRemainingQuantity(productName, quantity, promoQuantity, nonAppliedPromoQuantity);
     }
+
 
     private void handleRemainingQuantity(String productName, int quantity, int promoQuantity,
                                          int nonAppliedPromoQuantity) {
@@ -94,10 +96,11 @@ public class PaymentSystem {
         if (remainingQuantity > 0 && inputView.confirmStandartPriceForRemainder(productName, remainingQuantity)) {
             addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
             addGeneralProductToCart(productName, remainingQuantity);
-        } else {
-            addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
-            addGeneralProductToCart(productName, quantity - promoQuantity);
+            return;
         }
+
+        addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
+        addGeneralProductToCart(productName, quantity - promoQuantity);
     }
 
 
@@ -129,10 +132,12 @@ public class PaymentSystem {
 
         if (addPromoItemCount > 0 && inputView.confirmAddtionPromotionItem(productName, addPromoItemCount)) {
             addCombinedPromoItems(promoProduct, promoQuantity + addPromoItemCount);
-        } else {
-            addOnlyPromoItems(promoProduct, promoQuantity);
+            return;
         }
+
+        addOnlyPromoItems(promoProduct, promoQuantity);
     }
+
 
     private void addCombinedPromoItems(Product promoProduct, int totalQuantity) {
         cart.addCartItem(new CartItem(promoProduct, totalQuantity));

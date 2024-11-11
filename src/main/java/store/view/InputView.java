@@ -14,12 +14,13 @@ public class InputView {
             String input = Console.readLine();
 
             if (InputValidator.isValidPurchaseInput(input)) {
-                return parsePurchaseInput(input); // 유효하면 입력을 파싱하여 반환
-            } else {
-                System.out.println("잘못된 형식입니다. 올바른 형식으로 다시 입력해 주세요.");
+                return parsePurchaseInput(input);
             }
+
+            System.out.println("잘못된 형식입니다. 올바른 형식으로 다시 입력해 주세요.");
         }
     }
+
 
     public static boolean isMembershipDiscount() {
         String input;
