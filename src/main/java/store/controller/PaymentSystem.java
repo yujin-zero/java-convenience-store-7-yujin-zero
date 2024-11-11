@@ -109,11 +109,17 @@ public class PaymentSystem {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
         int addPromoItemCount = promoProduct.calculateAddPromotionItem(quantity);
 
-        if (addPromoItemCount > 0 && inputView.confirmAddtionPromotionItem(productName, addPromoItemCount)) {
-            addCombinedPromoItems(promoProduct, promoQuantity + addPromoItemCount);
-            return true;
+        if (addPromoItemCount > 0) {
+            {
+                if (inputView.confirmAddtionPromotionItem(productName, addPromoItemCount)) {
+                    addCombinedPromoItems(promoProduct, promoQuantity + addPromoItemCount);
+                    return true;
+                } else {
+                    addCombinedPromoItems(promoProduct, promoQuantity);
+                }
+            }
+            return false;
         }
-        addOnlyPromoItems(promoProduct, quantity);
         return false;
     }
 
@@ -159,14 +165,10 @@ public class PaymentSystem {
     }
 
     private void processFullyPromoProduct(Product promoProduct, String productName, int quantity, int promoQuantity) {
-        int addPromoItemCount = promoProduct.calculateAddPromotionItem(quantity);
-
-        if (addPromoItemCount > 0 && inputView.confirmAddtionPromotionItem(productName, addPromoItemCount)) {
-            addCombinedPromoItems(promoProduct, promoQuantity + addPromoItemCount);
-            return;
+        if (!confirmAdditionalPromotionItems(productName, quantity, promoQuantity)) {
+            addOnlyPromoItems(promoProduct,
+                    promoQuantity);
         }
-
-        addOnlyPromoItems(promoProduct, quantity);
     }
 
 
