@@ -33,10 +33,8 @@ class PromotionLoaderTest {
 
         Promotion promotion1 = promotions.get(0);
         assertEquals("탄산2+1", promotion1.getName());
-//        assertEquals(2, promotion1.getBuy());
-//        assertEquals(1, promotion1.getGet());
-//        assertEquals(LocalDate.of(2024, 1, 1), promotion1.getStartDate());
-//        assertEquals(LocalDate.of(2024, 12, 31), promotion1.getEndDate());
+        assertEquals(2, promotion1.getBuy());
+        assertEquals(1, promotion1.getGet());
 
         Promotion promotion2 = promotions.get(1);
         assertEquals("MD추천상품", promotion2.getName());

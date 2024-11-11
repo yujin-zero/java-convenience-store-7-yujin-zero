@@ -97,4 +97,23 @@ class CartTest {
         Map<String, Integer> freeProducts = cartWithoutPromotion.calculateFreeProducts();
         assertTrue(freeProducts.isEmpty());
     }
+
+    @Test
+    @DisplayName("장바구니 항목 상세 정보 합산 테스트")
+    public void testGetCombinedItemDetails() {
+        Map<String, ItemDetail> combinedItemDetails = cart.getCombinedItemDetails();
+
+        assertEquals(2, combinedItemDetails.size(), "장바구니의 항목 수가 예상과 다릅니다");
+
+        assertTrue(combinedItemDetails.containsKey("콜라"));
+        ItemDetail colaDetail = combinedItemDetails.get("콜라");
+        assertEquals(3, colaDetail.getQuantity(), "콜라의 수량이 예상과 다릅니다");
+        assertEquals(1000, colaDetail.getPrice(), "콜라의 단가가 예상과 다릅니다");
+
+        assertTrue(combinedItemDetails.containsKey("사탕"));
+        ItemDetail candyDetail = combinedItemDetails.get("사탕");
+        assertEquals(2, candyDetail.getQuantity(), "사탕의 수량이 예상과 다릅니다");
+        assertEquals(200, candyDetail.getPrice(), "사탕의 단가가 예상과 다릅니다");
+    }
+
 }

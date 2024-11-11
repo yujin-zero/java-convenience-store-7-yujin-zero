@@ -19,7 +19,7 @@ public enum PromotionType {
     public static PromotionType fromName(String name) {
         PromotionType type = NAME_TO_TYPE_MAP.get(name);
         if (type == null) {
-            throw new IllegalArgumentException("Unknown promotion type: " + name);
+            throw new IllegalArgumentException(name);
         }
         return type;
     }
