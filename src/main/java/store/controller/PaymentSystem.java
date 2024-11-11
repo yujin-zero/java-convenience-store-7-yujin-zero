@@ -95,8 +95,8 @@ public class PaymentSystem {
         int remainingQuantity = quantity - (promoQuantity - nonAppliedPromoQuantity);
 
         if (remainingQuantity > 0 && inputView.confirmStandartPriceForRemainder(productName, remainingQuantity)) {
-            addPromoProductToCart(productName, promoQuantity - nonAppliedPromoQuantity);
-            addGeneralProductToCart(productName, remainingQuantity);
+            int pQuantity = addPromoProductToCart(productName, quantity);
+            addGeneralProductToCart(productName, quantity - pQuantity);
             return;
         }
 
