@@ -1,5 +1,8 @@
 package store.validator;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class InputValidator {
 
     public static boolean isValidYesNoInput(String input) {
@@ -8,7 +11,7 @@ public class InputValidator {
 
     public static boolean isValidPurchaseInput(String input) {
         input = input.replaceAll("\\s+", "");
-        String[] items = input.split(",");
+        List<String> items = Arrays.asList(input.split(","));
 
         for (String item : items) {
             if (!isValidItemFormat(item) || !isValidItemContent(item)) {
@@ -19,14 +22,15 @@ public class InputValidator {
         return true;
     }
 
+
     private static boolean isValidItemFormat(String item) {
         return item.startsWith("[") && item.endsWith("]") && item.contains("-");
     }
 
     private static boolean isValidItemContent(String item) {
         String content = item.substring(1, item.length() - 1);
-        String[] parts = content.split("-");
-        return parts.length == 2 && isValidQuantity(parts[1].trim());
+        List<String> parts = Arrays.asList(content.split("-"));
+        return parts.size() == 2 && isValidQuantity(parts.get(1).trim());
     }
 
     private static boolean isValidQuantity(String quantityStr) {
