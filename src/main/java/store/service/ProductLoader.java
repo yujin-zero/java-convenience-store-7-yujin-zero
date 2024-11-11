@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import store.constants.ErrorMessages;
 import store.model.Product;
 import store.model.Promotion;
 
@@ -38,7 +39,7 @@ public class ProductLoader {
     }
 
     private void handleFileReadException(String filePath, IOException e) {
-        throw new RuntimeException("파일을 읽는 도중 오류가 발생했습니다: " + filePath, e);
+        throw new RuntimeException(ErrorMessages.FILE_READ_ERROR + filePath, e);
     }
 
 

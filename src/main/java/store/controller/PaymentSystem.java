@@ -2,6 +2,7 @@ package store.controller;
 
 import java.util.List;
 import java.util.Map;
+import store.constants.ErrorMessages;
 import store.model.Cart;
 import store.model.CartItem;
 import store.model.ItemDetail;
@@ -50,7 +51,7 @@ public class PaymentSystem {
         Product generalProduct = findProductByNameAndPromotionStatus(productName, false);
 
         if (isQuantityExceedsAvailableStock(quantity, promoProduct, generalProduct)) {
-            outputView.printErrorMessage("재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+            outputView.printErrorMessage(ErrorMessages.EXCEEDS_STOCK);
             return;
         }
 

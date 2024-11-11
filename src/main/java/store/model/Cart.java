@@ -68,16 +68,6 @@ public class Cart {
         return freeProducts;
     }
 
-    public Map<Product, Integer> productCountInCart() {
-        Map<Product, Integer> cartItems = new LinkedHashMap<>();
-
-        for (CartItem item : cart) {
-            cartItems.put(item.getProduct(), item.getQuantity());
-        }
-
-        return cartItems;
-    }
-
     public Map<String, ItemDetail> getCombinedItemDetails() {
         Map<String, ItemDetail> combinedItems = new LinkedHashMap<>();
 
@@ -87,7 +77,7 @@ public class Cart {
             int price = item.getProduct().getPrice();
 
             combinedItems.putIfAbsent(itemName, new ItemDetail(0, price));
-            combinedItems.get(itemName).addQuantity(quantity); // 수량을 추가
+            combinedItems.get(itemName).addQuantity(quantity);
         }
 
         return combinedItems;

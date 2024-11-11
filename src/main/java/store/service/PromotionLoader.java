@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+import store.constants.ErrorMessages;
 import store.model.Promotion;
 
 public class PromotionLoader {
@@ -18,7 +19,7 @@ public class PromotionLoader {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             parsePromotionsFromFile(br, promotions);
         } catch (IOException e) {
-            throw new RuntimeException("파일을 읽는 도중 오류가 발생했습니다: " + filePath, e);
+            throw new RuntimeException(ErrorMessages.FILE_READ_ERROR + filePath, e);
         }
 
         return promotions;
