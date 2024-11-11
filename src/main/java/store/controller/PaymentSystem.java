@@ -109,19 +109,17 @@ public class PaymentSystem {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
         int addPromoItemCount = promoProduct.calculateAddPromotionItem(quantity);
 
-        if (addPromoItemCount > 0) {
-            {
-                if (inputView.confirmAddtionPromotionItem(productName, addPromoItemCount)) {
-                    addCombinedPromoItems(promoProduct, promoQuantity + addPromoItemCount);
-                    return true;
-                } else {
-                    addCombinedPromoItems(promoProduct, promoQuantity);
-                }
-            }
+        if (addPromoItemCount <= 0) {
             return false;
         }
-        return false;
+
+        boolean addExtraItems = inputView.confirmAddtionPromotionItem(productName, addPromoItemCount);
+        int totalQuantity = addExtraItems ? promoQuantity + addPromoItemCount : promoQuantity;
+        addCombinedPromoItems(promoProduct, totalQuantity);
+
+        return addExtraItems;
     }
+
 
     private boolean confirmStandardPriceForRemainingItems(String productName, int quantity, int remainingQuantity) {
         Product promoProduct = findProductByNameAndPromotionStatus(productName, true);
